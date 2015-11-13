@@ -11,11 +11,19 @@ public enum TileType
     Corridor
 }
 
+public enum TileBiome
+{
+    Grass,
+    Lava,
+    Stone,
+    Ice
+}
+
 public class Tile : MonoBehaviour
 {
     public TileType Type;
+    public TileBiome Biome;
 
-    // Use this for initialization
     void Start()
     {
         SetProperMaterial();
@@ -56,5 +64,12 @@ public class Tile : MonoBehaviour
 
         // Set Material
         GetComponent<MeshRenderer>().material = Material;
+    }
+
+    public void ChangeType( TileType newType)
+    {
+        Type = newType;
+
+        SetProperMaterial();
     }
 }

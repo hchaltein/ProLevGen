@@ -6,38 +6,40 @@ using System.Collections;
 [SelectionBase]
 public class TileGrid : MonoBehaviour
 {
-
-    
-    public int TilesPerUnit = 10;
+    int TilesPerUnit = 10;
     float TileSize;
 
-    public int GridHeight = 10;
-    public int GridWidth = 10;
+    int GridHeight = 10;
+    int GridWidth = 10;
 
     int TilesPerWidth;
     int TilesPerHeight;
 
-    private GameObject[] TileArray;
+    public GameObject[] TileArray;
     public GameObject TilePrefab;
 
-    public void Awake()
+    // Set Grid Size and proportions
+    public void SetGridSize(int _GridHeight, int _GridWidth, int _TilesPerUnit)
     {
-       // Set Tile Size
-       TileSize = 1f / TilesPerUnit;
+        GridHeight = _GridHeight;
+        GridWidth = _GridWidth;
+        TilesPerUnit = _TilesPerUnit;
 
-       TilesPerWidth = GridWidth * TilesPerUnit;
-       TilesPerHeight = GridHeight * TilesPerUnit;
+        // Set Tile Size
+        TileSize = 1f / TilesPerUnit;
+
+        // Calculate Grid's sizes in 
+        TilesPerWidth = GridWidth * TilesPerUnit;
+        TilesPerHeight = GridHeight * TilesPerUnit;
 
         // Creates TileArray
         TileArray = new GameObject[TilesPerHeight * TilesPerWidth];
-
-        // Creates TileGrid
-        CreateGrid();
     }
 
     // Creates the Tile Grid
-    void CreateGrid()
+    public void CreateGrid()
     {
+
         int TileArrayIndex= 0;
         for (int y = 0; y < TilesPerHeight; y++)
         {
@@ -63,7 +65,7 @@ public class TileGrid : MonoBehaviour
         Tile.GetComponent<Tile>().Type = TileType.Unassigned;
         
         // Assign Tile to its Position
-        TileArray[TileArrayIndex] = Tile;
-        
+        TileArray[TileArrayIndex] = Tile;   
     }
+
 }

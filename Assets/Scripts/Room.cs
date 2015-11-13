@@ -8,9 +8,9 @@ public class Room
     public int TileWidth, TileHeight;
     public int TilesPerUnit;
 
-    public int RoomCenter;
-
     public int BotLeftTile, BotRightTile, UpLeftTile, UpRightTile;
+
+    public int RoomCenterTile;
 
     public int[] TileIndexList;
 
