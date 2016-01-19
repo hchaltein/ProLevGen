@@ -60,21 +60,49 @@ public class TileGrid : MonoBehaviour
         Tile.transform.localPosition = new Vector3((x + 0.5f) * TileSize, (y + 0.5f) * TileSize);
         Tile.transform.localScale = Vector3.one * TileSize;
 
-        // Set Tile type to Unassigned Type
+        // Set Tile type to Unassigned Type and gie it an index.
         Tile.GetComponent<Tile>(). SetTileType(TileType.Wall);
-        
+        Tile.GetComponent<Tile>().Index = TileArrayIndex;
+
         // Assign Tile to its Position
-        TileArray[TileArrayIndex] = Tile;   
+        TileArray[TileArrayIndex] = Tile;
     }
 
-    public void CreateRoom(int BotLeftTile, int UpRightTile)
+    public void CreateRoomFromTileIndex(int BotLeftTileIndex, int UpRightTileIndex)
     {
-        for (int i = BotLeftTile; i <= UpRightTile; i++)
+        int BotLeftMod, BotLeftDiv;
+        int UpRightMod, UpRightDiv;
+
+        BotLeftMod = BotLeftTileIndex % TilesPerWidth;
+        BotLeftDiv = BotLeftTileIndex / TilesPerWidth;
+
+        UpRightMod = UpRightTileIndex % TilesPerWidth;
+        UpRightDiv = UpRightTileIndex/ TilesPerWidth;
+
+        if (UpRightDiv <= BotLeftDiv +1 || UpRightMod <= BotLeftMod +1)
         {
-            if (((BotLeftTile/TilesPerWidth) <= i / TilesPerWidth && i / TilesPerWidth <= UpRightTile/ TilesPerWidth) &&
-                (BotLeftTile % TilesPerWidth) <= i % TilesPerWidth && i % TilesPerWidth <= UpRightTile % TilesPerWidth)
+            Debug.Log("Invalid Room Coordinates");
+            return;
+        }
+
+        // Iterate through grid selecting the room tiles.
+        for (int i = BotLeftTileIndex; i <= UpRightTileIndex; i++)
+        {   
+            // Select Tiles Rows (Division)
+            if (((BotLeftDiv < ( i/ TilesPerWidth)) && ((i / TilesPerWidth) < UpRightDiv)) &&
+            // Select Tiles Columns (Module)
+                (BotLeftMod < ( i %TilesPerWidth)) && ((i % TilesPerWidth) < UpRightMod))
             {
                 TileArray[i].GetComponent<Tile>().SetTileType(TileType.Room);
+                Debug.Log("Creating Room Tile");
+            }
+            // Select Tiles Rows (Division) with excess Columns
+            else if (((BotLeftDiv == (i / TilesPerWidth)) || ((i / TilesPerWidth) <= UpRightDiv)) &&
+            // Exclude excess Tiles Columns (Module)
+                !((i%TilesPerWidth) < BotLeftMod) && !(UpRightMod < (i % TilesPerWidth)))
+            {
+                TileArray[i].GetComponent<Tile>().SetTileType(TileType.WallBorder);
+                Debug.Log("Creating Wall Border Tile");
             }
         }
     }

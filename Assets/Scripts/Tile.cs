@@ -26,6 +26,9 @@ public class Tile : MonoBehaviour
     [SerializeField]
     TileBiome Biome;
 
+    // The Tile's index on the gird.
+    public int Index;
+
     void Start()
     {
         SetProperMaterial();

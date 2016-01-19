@@ -27,13 +27,13 @@ public class LevelGenerator : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Grid.SetGridSize(5, 5, 1);
+            Grid.SetGridSize(10, 10, 2);
             Grid.CreateGrid();
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && (Grid.TileArray.Length != 0))
         {
-            Grid.CreateRoom(6, 13);
+            Grid.CreateRoomFromTileIndex(45, 348);
         }
 	}
 }
