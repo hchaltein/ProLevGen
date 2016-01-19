@@ -21,8 +21,10 @@ public enum TileBiome
 
 public class Tile : MonoBehaviour
 {
-    public TileType Type;
-    public TileBiome Biome;
+    [SerializeField]
+    TileType Type;
+    [SerializeField]
+    TileBiome Biome;
 
     void Start()
     {
@@ -32,8 +34,14 @@ public class Tile : MonoBehaviour
     // Select and Assign the Correct Material to a Tile Given its
     void SetProperMaterial()
     {
-        Material Material;
-    
+        // Test if material is already properly set.
+        if (GetComponent<MeshRenderer>().material.ToString() == Type.ToString())
+        {
+            Debug.Log("Material already proper");
+            return;
+        }
+
+        Material Material;    
         // Load Correct Material
         switch (Type)
         {
@@ -66,10 +74,16 @@ public class Tile : MonoBehaviour
         GetComponent<MeshRenderer>().material = Material;
     }
 
-    public void ChangeType( TileType newType)
+    // Setter Function of Tile Type
+    public void SetTileType( TileType newType)
     {
         Type = newType;
 
         SetProperMaterial();
+    }
+    // Getter function for Tile Type
+    public TileType GetTileType()
+    {
+        return Type;
     }
 }

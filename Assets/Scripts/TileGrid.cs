@@ -3,7 +3,7 @@ using System.Collections;
 
 // The Tile Grid that will be filled Up by the 
 
-[SelectionBase]
+//[SelectionBase]
 public class TileGrid : MonoBehaviour
 {
     int TilesPerUnit = 10;
@@ -39,7 +39,6 @@ public class TileGrid : MonoBehaviour
     // Creates the Tile Grid
     public void CreateGrid()
     {
-
         int TileArrayIndex= 0;
         for (int y = 0; y < TilesPerHeight; y++)
         {
@@ -62,10 +61,22 @@ public class TileGrid : MonoBehaviour
         Tile.transform.localScale = Vector3.one * TileSize;
 
         // Set Tile type to Unassigned Type
-        Tile.GetComponent<Tile>().Type = TileType.Unassigned;
+        Tile.GetComponent<Tile>(). SetTileType(TileType.Wall);
         
         // Assign Tile to its Position
         TileArray[TileArrayIndex] = Tile;   
+    }
+
+    public void CreateRoom(int BotLeftTile, int UpRightTile)
+    {
+        for (int i = BotLeftTile; i <= UpRightTile; i++)
+        {
+            if (((BotLeftTile/TilesPerWidth) <= i / TilesPerWidth && i / TilesPerWidth <= UpRightTile/ TilesPerWidth) &&
+                (BotLeftTile % TilesPerWidth) <= i % TilesPerWidth && i % TilesPerWidth <= UpRightTile % TilesPerWidth)
+            {
+                TileArray[i].GetComponent<Tile>().SetTileType(TileType.Room);
+            }
+        }
     }
 
 }

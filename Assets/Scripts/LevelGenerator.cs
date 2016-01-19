@@ -25,10 +25,15 @@ public class LevelGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Grid.SetGridSize(20, 20, 4);
+            Grid.SetGridSize(5, 5, 1);
             Grid.CreateGrid();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Grid.CreateRoom(6, 13);
         }
 	}
 }
