@@ -3,30 +3,38 @@ using System.Collections;
 
 public class Room
 {
+    // Public Variables
+    public int BotLeftTile, UpRightTile;
+    public int TilesPerWidth;
 
-    public int Width, Height;
-    public int TileWidth, TileHeight;
-    public int TilesPerUnit;
+    // Private Variables
+    public int CenterTile;
 
-    public int BotLeftTile, BotRightTile, UpLeftTile, UpRightTile;
-
-    public int RoomCenterTile;
-
-    public int[] TileIndexList;
 
     // Contructors
     // Default
-    Room(int _TilesPerUnit, int _Width = 2 , int _Height = 2)
+    public Room(int _BotLeftTile, int _UpRightTile, int _CenterTile, int _TilesPerWidth)
     {
         // Get Values
-        Width = _Width;
-        Height = _Height;
-        TilesPerUnit = _TilesPerUnit;
-        // Calcule Room size in Tiles
-        TileWidth = Width * TilesPerUnit;
-        TileHeight = Height * TilesPerUnit;
+        BotLeftTile = _BotLeftTile;
+        UpRightTile = _UpRightTile;
+        CenterTile = _CenterTile;
+        TilesPerWidth = _TilesPerWidth;
+    }
 
-        TileIndexList = new int[TileWidth * TileHeight];
+    public Room(int _BotLeftTile, int _UpRightTile, int _TilesPerWidth)
+    {
+        // Get Values
+        BotLeftTile = _BotLeftTile;
+        UpRightTile = _UpRightTile;
+        TilesPerWidth = _TilesPerWidth;
+        
+        //Calculate Center Tile
+        int CenterTileX = ((UpRightTile - BotLeftTile) % TilesPerWidth)/2;
+        int CenterTileY = ((UpRightTile - BotLeftTile) / TilesPerWidth)/2;
+
+        CenterTile = BotLeftTile+ CenterTileX + (CenterTileY* TilesPerWidth);
+
     }
 
 }

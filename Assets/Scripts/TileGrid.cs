@@ -12,7 +12,7 @@ public class TileGrid : MonoBehaviour
     int GridHeight = 10;
     int GridWidth = 10;
 
-    int TilesPerWidth;
+    public int TilesPerWidth;
     int TilesPerHeight;
 
     public GameObject[] TileArray;
@@ -68,7 +68,7 @@ public class TileGrid : MonoBehaviour
         TileArray[TileArrayIndex] = Tile;
     }
 
-    public void CreateRoomFromTileIndex(int BotLeftTileIndex, int UpRightTileIndex)
+    public void CreateRoomFromIndex(int BotLeftTileIndex, int UpRightTileIndex)
     {
         int BotLeftMod, BotLeftDiv;
         int UpRightMod, UpRightDiv;
@@ -94,7 +94,6 @@ public class TileGrid : MonoBehaviour
                 (BotLeftMod < ( i %TilesPerWidth)) && ((i % TilesPerWidth) < UpRightMod))
             {
                 TileArray[i].GetComponent<Tile>().SetTileType(TileType.Room);
-                Debug.Log("Creating Room Tile");
             }
             // Select Tiles Rows (Division) with excess Columns
             else if (((BotLeftDiv == (i / TilesPerWidth)) || ((i / TilesPerWidth) <= UpRightDiv)) &&
@@ -102,9 +101,57 @@ public class TileGrid : MonoBehaviour
                 !((i%TilesPerWidth) < BotLeftMod) && !(UpRightMod < (i % TilesPerWidth)))
             {
                 TileArray[i].GetComponent<Tile>().SetTileType(TileType.WallBorder);
-                Debug.Log("Creating Wall Border Tile");
             }
         }
     }
+    public void CreateCorridorFromIndex (int Room1Center, int Room2Center)
+    {
+        int TopTile, BotTile;
+        int CornerTile, CornerDeltaX;
+        int StartTile, EndTile;
 
+        // Calculate corridor corner Tile.
+        // Figure out which is the topmost Room. Room indexes grow from left to right, bot to top.
+        if (Room1Center > Room2Center)
+        {
+            TopTile = Room1Center;
+            BotTile = Room2Center;
+        }
+        else
+        {
+            TopTile = Room2Center;
+            BotTile = Room1Center;
+        }
+
+        CornerDeltaX = TopTile % TilesPerWidth - BotTile% TilesPerWidth;
+        CornerTile = BotTile + CornerDeltaX;
+
+        if (CornerTile < BotTile)
+        {  //Corner Tile is to the left of Bottom tile
+            StartTile = CornerTile;
+            EndTile = BotTile;
+        }
+        else
+        {  //Corner Tile is to the right of Bottom tile
+            StartTile = BotTile;
+            EndTile = CornerTile;
+        }
+
+        // Creates horizontal part of corridor
+        for (int i = StartTile; i <= EndTile;)
+        {
+            TileArray[i].GetComponent<Tile>().SetTileType(TileType.Corridor);
+            i++;
+        }
+
+        StartTile = CornerTile;
+        EndTile = TopTile;
+
+        // Creates Vertical Part of Corridor
+        for (int i = StartTile; i <= EndTile;)
+        {
+            TileArray[i].GetComponent<Tile>().SetTileType(TileType.Corridor);
+            i += TilesPerWidth;
+        }
+    }
 }
