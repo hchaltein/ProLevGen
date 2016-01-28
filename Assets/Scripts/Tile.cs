@@ -11,20 +11,10 @@ public enum TileType
     Corridor
 }
 
-public enum TileBiome
-{
-    Grass,
-    Lava,
-    Stone,
-    Ice
-}
-
 public class Tile : MonoBehaviour
 {
     [SerializeField]
     TileType Type;
-    [SerializeField]
-    TileBiome Biome;
 
     // The Tile's index on the gird.
     public int Index;
